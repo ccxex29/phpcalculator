@@ -29,5 +29,5 @@ try {
 
     $app->run(new ArgvInput(), new ConsoleOutput());
 } catch (Throwable $e) {
-	echo $e;
+	fwrite(STDERR, $e . PHP_EOL);
 }
