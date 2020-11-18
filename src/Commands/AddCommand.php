@@ -32,7 +32,7 @@ class AddCommand extends Command
         $this->description = sprintf('%s all given Numbers', ucfirst($commandVerb));
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             //->addArgument($this->getCommandVerb(), InputArgument::REQUIRED, $this->description)
@@ -65,7 +65,7 @@ class AddCommand extends Command
         return $this->argument('numbers');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $this->handle();
     }
