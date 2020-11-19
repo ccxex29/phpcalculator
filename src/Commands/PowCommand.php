@@ -23,13 +23,14 @@ class PowCommand extends Calculate implements TwoArgsCalculation
 
     protected function configure(): void
     {
+        $this->ignoreValidationErrors();
+
         $this
             ->setName($this->getCommandName())
-            ->setDescription($this->getCommandDescription())
-            ->setHelp($this->getCommandDescription())
             ->addArgument('base', InputArgument::REQUIRED, $this->getArgumentBaseDescription())
             ->addArgument('exp', InputArgument::REQUIRED, $this->getArgumentModDescription())
         ;
+        $this->description = $this->getCommandDescription();
     }
 
     public function getArgumentBaseDescription(): string
