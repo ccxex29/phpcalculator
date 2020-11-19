@@ -10,9 +10,10 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 try {
     require_once __DIR__.'/vendor/autoload.php';
 
+    $appVersion = '0.2';
     $container = new Container();
     $dispatcher = new Dispatcher();
-    $app = new Application($container, $dispatcher, '0.1');
+    $app = new Application($container, $dispatcher, $appVersion);
     $app->setName('Calculator');
 
     $commands = require_once __DIR__.'/commands.php';
