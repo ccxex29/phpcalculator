@@ -2,7 +2,7 @@
 
 namespace Jakmall\Recruitment\Calculator\History;
 
-use Illuminate\Console\Command;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -12,6 +12,7 @@ class HistoryListCommand extends Command
     public function __construct()
     {
         parent::__construct();
+        echo "HistoryList constructed!" . PHP_EOL;
     }
 
     protected function configure()
