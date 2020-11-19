@@ -72,14 +72,6 @@ abstract class Calculate extends Command
         return implode($glue, $numbers);
     }
 
-    abstract protected function getArgumentNumberDescription(): string;
-
-    abstract protected function getCommandVerb(): string;
-
-    abstract protected function getCommandPassiveVerb(): string;
-
-    abstract protected function getOperator(): string;
-
     /**
      * @param array $numbers
      *
@@ -95,4 +87,20 @@ abstract class Calculate extends Command
 
         return $this->calculate($this->calculateAll($numbers), $number);
     }
+
+    abstract protected function getArgumentNumberDescription(): string;
+
+    abstract protected function getCommandVerb(): string;
+
+    abstract protected function getCommandPassiveVerb(): string;
+
+    abstract protected function getOperator(): string;
+
+    /**
+     * @param int|float $number1
+     * @param int|float $number2
+     *
+     * @return int|float
+     */
+    abstract protected function calculate($number1, $number2);
 }
