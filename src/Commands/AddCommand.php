@@ -17,17 +17,7 @@ class AddCommand extends Calculate
     public function __construct()
     {
         parent::__construct();
-
-        $commandVerb = $this->getCommandVerb();
-
-        $this->signature = sprintf(
-            '%s {numbers* : The numbers to be %s}',
-            $commandVerb,
-            $this->getCommandPassiveVerb()
-        );
-        $this->description = sprintf('%s all given Numbers', ucfirst($commandVerb));
     }
-
 
     protected function getArgumentNumberDescription(): string
     {
