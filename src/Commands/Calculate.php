@@ -23,27 +23,30 @@ abstract class Calculate extends Command
     {
         parent::__construct();
 
-        $commandVerb = $this->getCommandVerb();
-
-        $this->signature = sprintf(
-            '%s {numbers* : The numbers to be %s}',
-            $commandVerb,
-            $this->getCommandPassiveVerb()
-        );
-        $this->description = sprintf('%s all given Numbers', ucfirst($commandVerb));
+        /*
+         * $commandVerb = $this->getCommandName();
+         * $this->signature = sprintf(
+         *     '%s {numbers* : The numbers to be %s}',
+         *     $commandVerb,
+         *     $this->getCommandPassiveVerb()
+         * );
+         * $this->description = sprintf("%s", $this->getCommandDescription());
+         */
     }
 
     protected function configure(): void
     {
+        $this->ignoreValidationErrors();
         $this
             ->setName($this->getCommandName())
-            ->setDescription($this->getCommandDescription())
-            //->addArgument($this->getCommandVerb(), InputArgument::REQUIRED, $this->description)
+            ->setDescription($this->getCommandDescription()) // Description seems to be broken atm
+            ->setHelp($this->getCommandDescription())        // I use this as a replacement since the use of help is
+                                                             // similar to description
             ->addArgument('numbers', InputArgument::IS_ARRAY, $this->getArgumentNumberDescription())
         ;
     }
 
-    public function handle(): void
+    protected function handle(): void
     {
         $numbers = $this->getInput();
         $description = $this->generateCalculationDescription($numbers);
@@ -95,8 +98,6 @@ abstract class Calculate extends Command
 
         return $this->calculate($this->calculateAll($numbers), $number);
     }
-
-    abstract protected function getArgumentNumberDescription(): string;
 
     abstract protected function getCommandVerb(): string;
 

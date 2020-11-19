@@ -2,7 +2,7 @@
 
 namespace Jakmall\Recruitment\Calculator\Commands;
 
-class SubtractCommand extends Calculate
+class SubtractCommand extends Calculate implements ManyArgsCalculation
 {
     /**
      * @var string
@@ -19,7 +19,7 @@ class SubtractCommand extends Calculate
         parent::__construct();
     }
 
-    protected function getArgumentNumberDescription(): string
+    public function getArgumentNumberDescription(): string
     {
         return 'The numbers to be subtracted';
     }

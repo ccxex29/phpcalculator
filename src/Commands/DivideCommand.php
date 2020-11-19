@@ -2,7 +2,7 @@
 
 namespace Jakmall\Recruitment\Calculator\Commands;
 
-class DivideCommand extends Calculate
+class DivideCommand extends Calculate implements ManyArgsCalculation
 {
     /**
      * @var string
@@ -19,7 +19,7 @@ class DivideCommand extends Calculate
         parent::__construct();
     }
 
-    protected function getArgumentNumberDescription(): string
+    public function getArgumentNumberDescription(): string
     {
         return 'The numbers to be divided';
     }

@@ -2,7 +2,7 @@
 
 namespace Jakmall\Recruitment\Calculator\Commands;
 
-class AddCommand extends Calculate
+class AddCommand extends Calculate implements ManyArgsCalculation
 {
     /**
      * @var string
@@ -19,7 +19,7 @@ class AddCommand extends Calculate
         parent::__construct();
     }
 
-    protected function getArgumentNumberDescription(): string
+    public function getArgumentNumberDescription(): string
     {
         return 'The numbers to be added';
     }
