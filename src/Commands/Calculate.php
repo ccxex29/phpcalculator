@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Jakmall\Recruitment\Calculator\Commands;
 
 use \Illuminate\Console\Command;
