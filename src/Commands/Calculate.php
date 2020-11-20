@@ -36,12 +36,21 @@ abstract class Calculate extends Command
     protected function configure(): void
     {
         $this->ignoreValidationErrors();
+        $this->description = $this->getCommandDescription();
+        $this->commandDetailSet();
+    }
 
+    /**
+     * Additional settings to define command
+     *
+     * @return void
+     */
+    protected function commandDetailSet(): void
+    {
         $this
             ->setName($this->getCommandName())
             ->addArgument('numbers', InputArgument::IS_ARRAY, $this->getArgumentNumberDescription())
         ;
-        $this->description = $this->getCommandDescription();
     }
 
     /**
