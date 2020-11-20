@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 try {
     require_once __DIR__.'/vendor/autoload.php';
 
-    $appVersion = '0.5';
+    $appVersion = '0.6';
     $container = new Container();
     $dispatcher = new Dispatcher();
     $app = new Application($container, $dispatcher, $appVersion);
