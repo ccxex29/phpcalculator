@@ -2,27 +2,15 @@
 
 namespace Jakmall\Recruitment\Calculator\History;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
-class HistoryClearCommand extends Command
+class HistoryClearCommand extends HistoryCommand
 {
-    protected static $defaultName = 'history:clear';
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected $signature = 'history:clear';
 
-    protected function configure()
-    {
-        $this
-            ->setDescription('Clear saved history')
-            ;
-    }
+    protected $description = 'Clear saved history';
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function handle(): void
     {
-        echo "Executing: " . HistoryClearCommand::$defaultName . PHP_EOL;
+        // TODO: Implement handle() method.
     }
 }

@@ -2,27 +2,46 @@
 
 namespace Jakmall\Recruitment\Calculator\History;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-
-class HistoryListCommand extends Command
+class HistoryListCommand extends HistoryCommand
 {
-    protected static $defaultName = 'history:list';
-    public function __construct()
+    /**
+     * @var string
+     */
+    protected $signature = 'history:list
+                            {--D|driver=database : Driver for storage connection}
+                            {commands?* : Filter the history by commands}';
+
+    /**
+     * @var string
+     */
+    protected $description = 'Show calculator history';
+
+    protected function handle(): void
     {
-        parent::__construct();
+        $driver = $this->option('driver');
+        $filter = $this->argument('commands');
+        if ($driver !== 'database' && $driver !== 'file') {
+            $this->error('Error: Invalid driver option provided!');
+            return;
+        }
+        $filter = $this->handleFilter($filter);
     }
 
-    protected function configure()
+    /**
+     * Take arguments that are not redundant or garbage
+     *
+     * @param $filter
+     *
+     * @return array
+     */
+    protected function handleFilter($filter): array
     {
-        $this
-            ->setDescription('Show calculator history')
-            ;
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        echo "Executing: " . HistoryListCommand::$defaultName . PHP_EOL;
+        $filterArray = [];
+        foreach ($filter as $f) {
+            if (in_array($f, $this->calculateList()) and !in_array($f, $filterArray)) {
+                array_push($filterArray, $f);
+            }
+        }
+        return $filterArray;
     }
 }
