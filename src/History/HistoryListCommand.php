@@ -2,6 +2,8 @@
 
 namespace Jakmall\Recruitment\Calculator\History;
 
+use Jakmall\Recruitment\Calculator\Database\Database;
+
 class HistoryListCommand extends HistoryCommand
 {
     /**
@@ -25,6 +27,9 @@ class HistoryListCommand extends HistoryCommand
             return;
         }
         $filter = $this->handleFilter($filter);
+        $history = $this->showLog($driver, $filter);
+        $this->printLog($history);
+
     }
 
     /**
@@ -43,5 +48,39 @@ class HistoryListCommand extends HistoryCommand
             }
         }
         return $filterArray;
+    }
+
+    /**
+     * Handle show log
+     *
+     * @param $driver
+     * @param $filter
+     *
+     * @return array
+     */
+    protected function showLog($driver, $filter): array
+    {
+        $history = new History($driver, $filter);
+        return $history->findAll();
+    }
+
+    /**
+     * Print log to console
+     *
+     * @param $history
+     *
+     * @return void
+     */
+    protected function printLog($history): void
+    {
+        if (empty($history)) {
+            $this->info('History is empty');
+        } else {
+            $i = 1;
+            foreach ($history as $li) {
+                echo $i . '. ' . $li->name . ' ' . $li->description . ' ' . $li->result . ' ' . date('Y-m-d h:i:s', $li->timestamp) . ' ' . PHP_EOL;
+                $i++;
+            }
+        }
     }
 }

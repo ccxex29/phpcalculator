@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Jakmall\Recruitment\Calculator\History\History;
+use DateTime;
 
 abstract class Calculate extends Command
 {
@@ -73,16 +74,25 @@ abstract class Calculate extends Command
         $numbers = $this->getInput();
         $description = $this->generateCalculationDescription($numbers);
         $result = $this->calculateAll($numbers);
+        $timestamp = new DateTime();
 
-        $this->logger->log(
-            (object) array(
-                'name' => $this->getCommandName(),
-                'description' => $description,
-                'result' => $result,
-            )
-        );
+        $this->logToDatabase($this->getCommandName(), $description, $result, $timestamp->getTimestamp());
 
         $this->comment(sprintf('%s = %s', $description, $result));
+    }
+
+    protected function logToDatabase($name, $description, $result, $timestamp): void
+    {
+        if (! $this->logger->log(
+            (object) array(
+                'name' => $name,
+                'description' => $description,
+                'result' => $result,
+                'timestamp' => $timestamp,
+            )
+        )) {
+            $this->error('Error while logging data!');
+        }
     }
 
     /**

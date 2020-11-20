@@ -37,7 +37,6 @@ abstract class HistoryCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        echo "Executing: " . $this->signature . PHP_EOL;
         $this->handle();
     }
 
