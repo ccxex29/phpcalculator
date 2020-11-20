@@ -29,7 +29,6 @@ class HistoryListCommand extends HistoryCommand
         $filter = $this->handleFilter($filter);
         $history = $this->showLog($driver, $filter);
         $this->printLog($history);
-
     }
 
     /**
