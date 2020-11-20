@@ -10,9 +10,10 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 try {
     require_once __DIR__.'/vendor/autoload.php';
 
+    $appVersion = '0.6';
     $container = new Container();
     $dispatcher = new Dispatcher();
-    $app = new Application($container, $dispatcher, '0.1');
+    $app = new Application($container, $dispatcher, $appVersion);
     $app->setName('Calculator');
     $appConfig = require_once __DIR__.'/config/app.php';
     $providers = $appConfig['providers'];
@@ -35,4 +36,5 @@ try {
 
     $app->run(new ArgvInput(), new ConsoleOutput());
 } catch (Throwable $e) {
+	fwrite(STDERR, $e . PHP_EOL);
 }

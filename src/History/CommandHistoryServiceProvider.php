@@ -15,9 +15,8 @@ class CommandHistoryServiceProvider implements ContainerServiceProviderInterface
     {
         $container->bind(
             CommandHistoryManagerInterface::class,
-            function () {
-                //todo: register implementation
-                return null;
+            function ($app) {
+                return new History();
             }
         );
     }

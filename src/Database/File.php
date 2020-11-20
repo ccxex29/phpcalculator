@@ -1,0 +1,80 @@
+<?php
+
+namespace Jakmall\Recruitment\Calculator\Database;
+
+use Throwable;
+
+include('config/file_drv_config.php');
+
+class File implements DriverInterface
+{
+    private $csvHeader = ['name', 'description', 'result', 'timestamp'];
+
+    /**
+     * Get data from table
+     *
+     * @param array
+     *
+     * @return array
+     */
+    public function fetchFile($filter): array
+    {
+        $any = false;
+        if ($filter === ['*']) {
+            $any = true;
+        }
+        $file = new FileOperation(FILENAME);
+        $array = $file->readCsv($filter, $any);
+        $array = $this->convertIntoObjectArray($array, $this->csvHeader);
+        return $array;
+    }
+
+    /**
+     * Convert regular array from csv into keyed object array
+     *
+     * @param $array
+     * @param $header
+     *
+     * @return array
+     */
+    protected function convertIntoObjectArray($array, $header): array
+    {
+        $objArray = [];
+        foreach ($array as $l) {
+            array_push(
+                $objArray,
+                (object)[
+                    'name' => $l[0],
+                    'description' => $l[1],
+                    'result' => $l[2],
+                    'timestamp' => $l[3]
+                ]
+            );
+        }
+        return $objArray;
+    }
+
+    public function pushRecord($name, $description, $result, $timestamp): bool
+    {
+        try{
+            $file = new FileOperation(FILENAME);
+            $file->appendCsv([$name, $description, $result, $timestamp], $this->csvHeader);
+            return true;
+        } catch (Throwable $e) {
+            fwrite(STDERR, $e . PHP_EOL);
+            return false;
+        }
+    }
+
+    public function popAllRecord(): bool
+    {
+        try {
+            $file = new FileOperation(FILENAME);
+            $file->emptyCsv();
+            return true;
+        } catch (Throwable $e) {
+            fwrite(STDERR, $e . PHP_EOL);
+            return false;
+        }
+    }
+}
