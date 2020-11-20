@@ -12,7 +12,6 @@ class HistoryListCommand extends Command
     public function __construct()
     {
         parent::__construct();
-        echo "HistoryList constructed!" . PHP_EOL;
     }
 
     protected function configure()

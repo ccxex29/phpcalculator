@@ -12,7 +12,10 @@ class History implements CommandHistoryManagerInterface
     }
     public function log($command): bool
     {
-        return false;
+        if (!is_numeric($command->description)){
+            return false;
+        }
+        return true;
     }
 
     public function clearAll(): bool

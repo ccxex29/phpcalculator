@@ -3,9 +3,11 @@
 namespace Jakmall\Recruitment\Calculator\Commands;
 
 use Illuminate\Console\Command;
+use Jakmall\Recruitment\Calculator\History\Infrastructure\CommandHistoryManagerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Jakmall\Recruitment\Calculator\History\History;
 
 abstract class Calculate extends Command
 {
@@ -23,6 +25,13 @@ abstract class Calculate extends Command
      */
     protected $commandDescription;
 
+    /**
+     * Command logger object
+     *
+     * @var CommandHistoryManagerInterface
+     */
+    protected $logger;
+
     public function __construct()
     {
         parent::__construct();
@@ -35,6 +44,7 @@ abstract class Calculate extends Command
      */
     protected function configure(): void
     {
+        $this->logger = new History();
         $this->ignoreValidationErrors();
         $this->description = $this->getCommandDescription();
         $this->commandDetailSet();
@@ -63,6 +73,14 @@ abstract class Calculate extends Command
         $numbers = $this->getInput();
         $description = $this->generateCalculationDescription($numbers);
         $result = $this->calculateAll($numbers);
+
+        $this->logger->log(
+            (object) array(
+                'name' => $this->getCommandName(),
+                'description' => $description,
+                'result' => $result,
+            )
+        );
 
         $this->comment(sprintf('%s = %s', $description, $result));
     }
