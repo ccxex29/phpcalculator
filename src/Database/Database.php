@@ -5,6 +5,7 @@ namespace Jakmall\Recruitment\Calculator\Database;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
+use SQLite3;
 use Throwable;
 
 include('config/db_config.php');
@@ -15,7 +16,9 @@ class Database extends Manager implements DriverInterface
     {
         parent::__construct();
         try {
-            $this->initDatabase();
+            if($this->initDatabase()) {
+                die('Error unable to initialise database!');
+            }
 
             $this->setEventDispatcher(new Dispatcher(new Container()));
             $this->setAsGlobal();
@@ -31,7 +34,7 @@ class Database extends Manager implements DriverInterface
      * Connect to database
      *
      * @param $driver string
-     * @param $table string
+     * @param string $database
      *
      * @return bool
      */
@@ -58,17 +61,15 @@ class Database extends Manager implements DriverInterface
      */
     protected function initDatabase(): bool
     {
-        if ($this->connectDatabase(DBDRV, DBNAME)) {
-            return true;
-        } else {
+        if (!file_exists(DBNAME)) {
             $dbFile = new FileOperation(DBNAME);
             $dbFile->createFile('');
-            try {
-                $this->connectDatabase(DBDRV, DBNAME);
-                return true;
-            } catch (Throwable $e) {
-                return false;
-            }
+        }
+        try {
+            $this->connectDatabase(DBDRV, DBNAME);
+            return true;
+        } catch (Throwable $e) {
+            return false;
         }
     }
 
