@@ -55,6 +55,7 @@ class History implements CommandHistoryManagerInterface
                 $db->pushRecord(
                     $command->name,
                     $command->description,
+                    json_encode($command->input),
                     $command->result,
                     $command->timestamp
                 );
@@ -62,6 +63,7 @@ class History implements CommandHistoryManagerInterface
                 $file->pushRecord(
                     $command->name,
                     $command->description,
+                    json_encode($command->input),
                     $command->result,
                     $command->timestamp
                 );

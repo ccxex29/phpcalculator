@@ -74,7 +74,7 @@ abstract class CalculateCommand extends Command
         $numbers = $this->getInput();
 
         $calc = $this->calculateTask($this->getCommandName(), $numbers);
-        if (!$calc->logToDatabase($calc->getName(), $calc->getDescription(), $calc->getResult())) {
+        if (!$calc->logToDatabase($calc->getName(), $calc->getDescription(), $calc->getResult(), $numbers)) {
                 $this->error('Error while logging data!');
         }
 

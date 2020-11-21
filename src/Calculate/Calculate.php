@@ -87,9 +87,10 @@ abstract class Calculate
      * @param $description
      * @param $result
      *
+     * @param $numbers
      * @return bool
      */
-    public function logToDatabase($name, $description, $result): bool
+    public function logToDatabase($name, $description, $result, $numbers): bool
     {
         $timestamp = new DateTime();
         $timestamp = $timestamp->getTimestamp();
@@ -97,6 +98,7 @@ abstract class Calculate
             (object) array(
                 'name' => $name,
                 'description' => $description,
+                'input' => $numbers,
                 'result' => $result,
                 'timestamp' => $timestamp,
             )

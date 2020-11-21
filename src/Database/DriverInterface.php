@@ -11,12 +11,13 @@ interface DriverInterface
      *
      * @param $name string
      * @param $description string
-     * @param $result int
+     * @param string $input
+     * @param $result
      * @param $timestamp int
      *
      * @return bool
      */
-    public function pushRecord($name, $description, $result, $timestamp): bool;
+    public function pushRecord(string $name, string $description, string $input, $result, int $timestamp): bool;
 
     /**
      * Pop every element on the database

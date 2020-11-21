@@ -14,7 +14,7 @@
         "illuminate/routing": "5.8.*",
         "illuminate/support": "5.8.*",
         "phplucidframe/console-table": "^1.2",
-        "ext-sqlite3": "*"
+        "ext-json": "*"
     },
     "autoload": {
         "psr-4": {

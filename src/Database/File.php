@@ -8,7 +8,7 @@ include('config/file_drv_config.php');
 
 class File implements DriverInterface
 {
-    private $csvHeader = ['name', 'description', 'result', 'timestamp'];
+    private $csvHeader = ['id', 'name', 'description', 'input', 'result', 'timestamp'];
 
     /**
      * Get data from table
@@ -44,21 +44,26 @@ class File implements DriverInterface
             array_push(
                 $objArray,
                 (object)[
-                    'name' => $l[0],
-                    'description' => $l[1],
-                    'result' => $l[2],
-                    'timestamp' => $l[3]
+                    'id' => $l[0],
+                    'name' => $l[1],
+                    'description' => $l[2],
+                    'input' => $l[3],
+                    'result' => $l[4],
+                    'timestamp' => $l[5]
                 ]
             );
         }
         return $objArray;
     }
 
-    public function pushRecord($name, $description, $result, $timestamp): bool
+    public function pushRecord(string $name, string $description, string $input, $result, int $timestamp): bool
     {
         try{
             $file = new FileOperation(FILENAME);
-            $file->appendCsv([$name, $description, $result, $timestamp], $this->csvHeader);
+            $id = new Database();
+            $id = $id->getLastId();
+
+            $file->appendCsv([$id, $name, $description, $input, $result, $timestamp], $this->csvHeader);
             return true;
         } catch (Throwable $e) {
             fwrite(STDERR, $e . PHP_EOL);

@@ -5,7 +5,6 @@ namespace Jakmall\Recruitment\Calculator\Database;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
-use SQLite3;
 use Throwable;
 
 include('config/db_config.php');
@@ -16,8 +15,8 @@ class Database extends Manager implements DriverInterface
     {
         parent::__construct();
         try {
-            if($this->initDatabase()) {
-                die('Error unable to initialise database!');
+            if(!$this->initDatabase()) {
+                die('Error unable to initialise database!' . PHP_EOL);
             }
 
             $this->setEventDispatcher(new Dispatcher(new Container()));
@@ -82,10 +81,13 @@ class Database extends Manager implements DriverInterface
     {
         try {
             $this->schema()->create(DBTBL, function ($tblCallback) {
+                $tblCallback->integer('id');
                 $tblCallback->string('name');
                 $tblCallback->string('description');
+                $tblCallback->string('input');
                 $tblCallback->biginteger('result');
                 $tblCallback->string('timestamp');
+                $tblCallback->primary(['id']);
             });
             return true;
         } catch (Throwable $e) {
@@ -136,12 +138,18 @@ class Database extends Manager implements DriverInterface
         }
     }
 
-    public function pushRecord($name, $description, $result, $timestamp): bool
+    public function getLastId(): int
+    {
+        return Database::table(DBTBL)->orderByDesc('id')->get()->toArray()[0]->id;
+    }
+
+    public function pushRecord(string $name, string $description, string $input, $result, int $timestamp): bool
     {
         try {
             Database::table(DBTBL)->insert([
                 'name' => $name,
                 'description' => $description,
+                'input' => $input,
                 'result' => $result,
                 'timestamp' => $timestamp
             ]);
