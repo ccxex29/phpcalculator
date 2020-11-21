@@ -25,4 +25,22 @@ interface DriverInterface
      * @return bool
      */
     public function popAllRecord(): bool;
+
+    /**
+     * Return the corresponding row with provided id
+     *
+     * @param $id
+     *
+     * @return array
+     */
+    public function findId($id): array;
+
+    /**
+     * Drop the corresponding row with provided id
+     *
+     * @param $id
+     *
+     * @return bool
+     */
+    public function deleteId($id): bool;
 }

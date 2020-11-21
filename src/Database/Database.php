@@ -170,4 +170,23 @@ class Database extends Manager implements DriverInterface
             return false;
         }
     }
+
+    public function findId($id): array
+    {
+        try {
+            return Database::table(DBTBL)->where('id', '=', (string)$id)->get()->toArray();
+        } catch (Throwable $e) {
+            return [];
+        }
+    }
+
+    public function deleteId($id): bool
+    {
+        try {
+            Database::table(DBTBL)->where('id', '=', $id)->delete();
+            return true;
+        } catch (Throwable $e) {
+            return false;
+        }
+    }
 }

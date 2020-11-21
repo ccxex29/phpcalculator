@@ -52,6 +52,9 @@ class FileOperation
         fclose($f);
     }
 
+    /**
+     * @param array $content
+     */
     public function createCsv(array $content): void
     {
         $f = fopen($this->fileName, 'w');
@@ -60,6 +63,10 @@ class FileOperation
         }
     }
 
+    /**
+     * @param array $content
+     * @param array $header
+     */
     public function appendCsv(array $content, array $header): void
     {
         if (!file_exists($this->fileName)) {
@@ -77,6 +84,32 @@ class FileOperation
         $this->createCsv($allRows);
     }
 
+    /**
+     * Remove csv row based on id
+     */
+    public function dropRowCsv($id, array $header): bool
+    {
+        try {
+            $prev = $this->readCsv(['*'], true);
+            $allRows = [];
+
+            array_push($allRows, $header);
+            foreach ($prev as $p) {
+                if ($p->id !== $id) {
+                    array_push($allRows, $p);
+                }
+            }
+
+            $this->createCsv($allRows);
+            return true;
+        } catch (Throwable $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Empty CSV
+     */
     public function emptyCsv(): void
     {
         $this->createCsv([['']]);

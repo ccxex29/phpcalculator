@@ -82,4 +82,30 @@ class File implements DriverInterface
             return false;
         }
     }
+
+    public function findId($id): array
+    {
+        try {
+            $file = $this->fetchFile(['*']);
+            $arr = [];
+            foreach ($file as $f) {
+                if ($f->id === $id) {
+                    array_push($arr, $f);
+                }
+            }
+            return $arr;
+        } catch (Throwable $e) {
+            fwrite(STDERR, $e . PHP_EOL);
+            return [];
+        }
+    }
+
+    public function deleteId($id): bool
+    {
+        $file = new FileOperation(DBNAME);
+        if (!$file->dropRowCsv($id, $this->csvHeader)) {
+            return true;
+        }
+        return false;
+    }
 }
