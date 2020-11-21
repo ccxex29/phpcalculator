@@ -102,8 +102,8 @@ class File implements DriverInterface
 
     public function deleteId($id): bool
     {
-        $file = new FileOperation(DBNAME);
-        if (!$file->dropRowCsv($id, $this->csvHeader)) {
+        $file = new FileOperation(FILENAME);
+        if ($file->dropRowCsv($id, $this->csvHeader)) {
             return true;
         }
         return false;

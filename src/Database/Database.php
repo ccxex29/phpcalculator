@@ -134,6 +134,7 @@ class Database extends Manager implements DriverInterface
                 return Database::table(DBTBL)->whereRaw('name IN ' . $getElem)->get()->toArray();
             }
         } catch (Throwable $e) {
+            echo $e;
             die('Error while fetching table' . PHP_EOL);
         }
     }
@@ -183,7 +184,7 @@ class Database extends Manager implements DriverInterface
     public function deleteId($id): bool
     {
         try {
-            Database::table(DBTBL)->where('id', '=', $id)->delete();
+            Database::table(DBTBL)->delete($id);
             return true;
         } catch (Throwable $e) {
             return false;

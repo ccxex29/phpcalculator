@@ -86,18 +86,21 @@ class FileOperation
 
     /**
      * Remove csv row based on id
+     *
+     * @param $id
+     *
+     * @param array $header
+     * @return bool
      */
     public function dropRowCsv($id, array $header): bool
     {
         try {
-            $prev = $this->readCsv(['*'], true);
+            $prev = $this->cherrypickReadCsv($id);
             $allRows = [];
 
             array_push($allRows, $header);
             foreach ($prev as $p) {
-                if ($p->id !== $id) {
-                    array_push($allRows, $p);
-                }
+                array_push($allRows, $p);
             }
 
             $this->createCsv($allRows);
@@ -105,6 +108,22 @@ class FileOperation
         } catch (Throwable $e) {
             return false;
         }
+    }
+
+    protected function cherrypickReadCsv($id, $len=1000)
+    {
+        $f = $this->getFile();
+
+        $data = [];
+        $i = 1;
+        while (($d = fgetcsv($f, $len, ',')) !== false) {
+            if ($i > 1 && !empty($d) && $d[0] != $id) {
+                array_push($data, $d);
+            }
+            $i++;
+        }
+        fclose($f);
+        return $data;
     }
 
     /**
@@ -124,15 +143,13 @@ class FileOperation
      */
     public function readCsv($filter, $any, $len=1000)
     {
-        if(($f = fopen($this->fileName, 'r')) === false) {
-            return;
-        }
+        $f = $this->getFile();
 
         $data = [];
         $i = 1;
         while (($d = fgetcsv($f, $len, ',')) !== false) {
             if ($i > 1 && !empty($d)) {
-                if (($any) || (in_array($d[0], $filter))) {
+                if (($any) || (in_array($d[1], $filter))) {
                     array_push($data, $d);
                 }
             }
@@ -140,5 +157,16 @@ class FileOperation
         }
         fclose($f);
         return $data;
+    }
+
+    /**
+     * @return resource|void
+     */
+    protected function getFile()
+    {
+        if(($f = fopen($this->fileName, 'r')) === false) {
+            return;
+        }
+        return $f;
     }
 }

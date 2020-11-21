@@ -24,10 +24,15 @@ class HistoryController extends Controller
         return new JsonResponse($this->manipulateJson($history->findById($id)));
     }
 
-    public function remove()
+    public function remove(Request $request)
     {
-        // todo: modify codes to remove history
-        dd('create remove history logic here');
+        $id = $this->getAction($request->path());
+        $id = $this->truncateIdPrefix($id);
+        $history = new History();
+        if($history->deleteById($id)) {
+            return new JsonResponse([], 204);
+        }
+        return new JsonResponse([], 400);
     }
 
     protected function manipulateJson($history): array

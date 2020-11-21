@@ -59,6 +59,19 @@ class History implements CommandHistoryManagerInterface
         }
     }
 
+    public function deleteById($id): bool
+    {
+        try {
+            $db = new Database();
+            $db->deleteId($id);
+            $file = new File();
+            $file->deleteId($id);
+            return true;
+        } catch (Throwable $e) {
+            return false;
+        }
+    }
+
     public function log($command): bool
     {
         if (!is_numeric($command->result)){
