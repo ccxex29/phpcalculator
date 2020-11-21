@@ -20,7 +20,6 @@ class CalculatorController extends Controller
         $calcObj = $this->switcher($reqCalc, $reqNumbers);
         $calcObj->logToDatabase($calcObj->getName(), $calcObj->getDescription(), $calcObj->getResult(), $reqNumbers);
         return new JsonResponse([
-            'test' => "Test",
             'command' => $calcObj->getName(),
             'operation' => $calcObj->getDescription(),
             'result' => $calcObj->getResult()
