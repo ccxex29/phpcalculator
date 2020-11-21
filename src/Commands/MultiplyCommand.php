@@ -2,7 +2,10 @@
 
 namespace Jakmall\Recruitment\Calculator\Commands;
 
-class MultiplyCommand extends Calculate implements ManyArgsCalculation
+use Jakmall\Recruitment\Calculator\Calculate\Calculate;
+use Jakmall\Recruitment\Calculator\Calculate\MultiplyCalculation;
+
+class MultiplyCommand extends CalculateCommand implements ManyArgsCalculation
 {
     /**
      * @var string
@@ -34,20 +37,8 @@ class MultiplyCommand extends Calculate implements ManyArgsCalculation
         return 'multiplied';
     }
 
-    protected function getOperator(): string
+    protected function calculateTask($name, $numbers): Calculate
     {
-        return '*';
+        return new MultiplyCalculation($this->logger, $name, $numbers);
     }
-
-    /**
-     * @param int|float $number1
-     * @param int|float $number2
-     *
-     * @return int|float
-     */
-    protected function calculate($number1, $number2)
-    {
-        return $number1 * $number2;
-    }
-
 }

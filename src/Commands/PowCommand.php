@@ -2,9 +2,11 @@
 
 namespace Jakmall\Recruitment\Calculator\Commands;
 
+use Jakmall\Recruitment\Calculator\Calculate\Calculate;
+use Jakmall\Recruitment\Calculator\Calculate\PowCalculation;
 use Symfony\Component\Console\Input\InputArgument;
 
-class PowCommand extends Calculate implements TwoArgsCalculation
+class PowCommand extends CalculateCommand implements TwoArgsCalculation
 {
     /**
      * @var string
@@ -55,20 +57,8 @@ class PowCommand extends Calculate implements TwoArgsCalculation
         return 'power of';
     }
 
-    protected function getOperator(): string
+    protected function calculateTask($name, $numbers): Calculate
     {
-        return '^';
+        return new PowCalculation($this->logger, $name, $numbers);
     }
-
-    /**
-     * @param int|float $number1
-     * @param int|float $number2
-     *
-     * @return int|float
-     */
-    protected function calculate($number1, $number2)
-    {
-        return pow($number1, $number2);
-    }
-
 }

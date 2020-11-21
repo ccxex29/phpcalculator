@@ -67,9 +67,11 @@ class History implements CommandHistoryManagerInterface
                 );
             } catch (Throwable $e) {
                 fwrite(STDERR, $e . PHP_EOL);
+                return false;
             }
             return true;
         } catch (Throwable $e) {
+            fwrite(STDERR, $e . PHP_EOL);
             return false;
         }
     }

@@ -2,7 +2,10 @@
 
 namespace Jakmall\Recruitment\Calculator\Commands;
 
-class DivideCommand extends Calculate implements ManyArgsCalculation
+use Jakmall\Recruitment\Calculator\Calculate\DivideCalculation;
+use Jakmall\Recruitment\Calculator\Calculate\Calculate;
+
+class DivideCommand extends CalculateCommand implements ManyArgsCalculation
 {
     /**
      * @var string
@@ -34,20 +37,8 @@ class DivideCommand extends Calculate implements ManyArgsCalculation
         return 'divided';
     }
 
-    protected function getOperator(): string
+    protected function calculateTask($name, $numbers): Calculate
     {
-        return '/';
+        return new DivideCalculation($this->logger, $name, $numbers);
     }
-
-    /**
-     * @param int|float $number1
-     * @param int|float $number2
-     *
-     * @return int|float
-     */
-    protected function calculate($number1, $number2)
-    {
-        return $number1 / $number2;
-    }
-
 }
