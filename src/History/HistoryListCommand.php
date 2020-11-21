@@ -3,6 +3,7 @@
 namespace Jakmall\Recruitment\Calculator\History;
 
 use Jakmall\Recruitment\Calculator\Database\Database;
+use LucidFrame\Console\ConsoleTable;
 
 class HistoryListCommand extends HistoryCommand
 {
@@ -75,11 +76,23 @@ class HistoryListCommand extends HistoryCommand
         if (empty($history)) {
             $this->info('History is empty');
         } else {
+            $table = new ConsoleTable();
             $i = 1;
+            $col = ['No', 'Command', 'Description', 'Result', 'Output', 'Time'];
+            foreach ( $col as $header) {
+                $table->addHeader($header);
+            }
             foreach ($history as $li) {
-                echo $i . '. ' . $li->name . ' ' . $li->description . ' ' . $li->result . ' ' . date('Y-m-d h:i:s', $li->timestamp) . ' ' . PHP_EOL;
+                $table->addRow()
+                    ->addColumn($i)
+                    ->addColumn($li->name)
+                    ->addColumn($li->description)
+                    ->addColumn($li->result)
+                    ->addColumn(sprintf('%s = %s', $li->description, $li->result))
+                    ->addColumn(date('Y-m-d h:i:s', $li->timestamp));
                 $i++;
             }
+            $table->display();
         }
     }
 }
