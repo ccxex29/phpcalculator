@@ -41,6 +41,7 @@ class History implements CommandHistoryManagerInterface
                 return $file->fetchFile($this->filter);
             }
         } catch (Throwable $e) {
+            return [];
         }
     }
     public function log($command): bool

@@ -2,7 +2,6 @@
 
 namespace Jakmall\Recruitment\Calculator\History;
 
-use Jakmall\Recruitment\Calculator\Database\Database;
 use LucidFrame\Console\ConsoleTable;
 
 class HistoryListCommand extends HistoryCommand

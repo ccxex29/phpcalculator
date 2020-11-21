@@ -18,6 +18,7 @@ class CalculatorController
         $reqCalc = str_replace('calculator/', '', $request->path());
         $reqNumbers = $request->json()->get('input');
         $calcObj = $this->switcher($reqCalc, $reqNumbers);
+        $calcObj->logToDatabase($calcObj->getName(), $calcObj->getDescription(), $calcObj->getResult(), $reqNumbers);
         return new JsonResponse([
             'command' => $calcObj->getName(),
             'operation' => $calcObj->getDescription(),
