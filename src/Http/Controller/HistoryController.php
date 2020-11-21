@@ -6,19 +6,22 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Jakmall\Recruitment\Calculator\History\History;
 
-class HistoryController
+class HistoryController extends Controller
 {
     public function index(Request $request)
     {
         $driverQuery = $request->query('driver', 'database');
         $history = new History($driverQuery);
-//        print_r($history->findAll());
         return new JsonResponse($this->manipulateJson($history->findAll()));
     }
 
-    public function show()
+    public function show(Request $request)
     {
-        dd('create show history by id here');
+        $id = $this->getAction($request->path());
+        $id = $this->truncateIdPrefix($id);
+        $driverQuery = $request->query('driver', 'database');
+        $history = new History($driverQuery);
+        return new JsonResponse($this->manipulateJson($history->findById($id)));
     }
 
     public function remove()

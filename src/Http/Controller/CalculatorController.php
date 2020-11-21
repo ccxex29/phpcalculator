@@ -11,15 +11,16 @@ use Jakmall\Recruitment\Calculator\Calculate\PowCalculation;
 use Jakmall\Recruitment\Calculator\Calculate\SubtractCalculation;
 use Jakmall\Recruitment\Calculator\History\History;
 
-class CalculatorController
+class CalculatorController extends Controller
 {
     public function calculate(Request $request)
     {
-        $reqCalc = str_replace('calculator/', '', $request->path());
+        $reqCalc = $this->getAction($request->path());
         $reqNumbers = $request->json()->get('input');
         $calcObj = $this->switcher($reqCalc, $reqNumbers);
         $calcObj->logToDatabase($calcObj->getName(), $calcObj->getDescription(), $calcObj->getResult(), $reqNumbers);
         return new JsonResponse([
+            'test' => "Test",
             'command' => $calcObj->getName(),
             'operation' => $calcObj->getDescription(),
             'result' => $calcObj->getResult()

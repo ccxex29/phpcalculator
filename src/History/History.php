@@ -35,8 +35,7 @@ class History implements CommandHistoryManagerInterface
             if ($this->driver === 'database') {
                 $db = new Database();
                 return $db->fetchTable($this->filter);
-            }
-            else {
+            } else {
                 $file = new File();
                 return $file->fetchFile($this->filter);
             }
@@ -44,6 +43,22 @@ class History implements CommandHistoryManagerInterface
             return [];
         }
     }
+
+    public function findById($id): array
+    {
+        try {
+            if ($this->driver === 'database') {
+                $db = new Database();
+                return $db->findId($id);
+            } else {
+                $file = new File();
+                return $file->findId($id);
+            }
+        } catch (Throwable $e) {
+            return [];
+        }
+    }
+
     public function log($command): bool
     {
         if (!is_numeric($command->result)){
