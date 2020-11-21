@@ -44,7 +44,7 @@ class HistoryController extends Controller
                 'command' => $his->name,
                 'operation' => $his->description,
                 'input' => json_decode($his->input),
-                'result' => $his->result,
+                'result' => (float)$his->result,
                 'time' => date('Y-m-d h:i:s', $his->timestamp)
             ]);
         }
